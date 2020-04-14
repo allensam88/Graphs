@@ -14,9 +14,16 @@ def earliest_ancestor(ancestors, starting_node):
         else:
             graph.add_vertex(item[0])
             graph.add_vertex(item[1])
+        graph.add_edge(item[1], item[0])
 
-        for item in ancestors:
-            graph.add_edge(item[1], item[0])
+    # for item in ancestors:
+
+    # for pair in ancestors:
+    #     parent = pair[0]
+    #     child = pair[1]
+    #     graph.add_vertex(parent)
+    #     graph.add_vertex(child)
+    #     graph.add_edge(child, parent)
 
     visited = graph.bft(starting_node)
     last = visited[-1]
