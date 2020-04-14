@@ -46,3 +46,14 @@ Clarifications:
 * IDs will always be positive integers.
 * A parent may have any number of children.
 
+
+
+starting at 6
+current_node is 6
+visited = [6, 3, 5]
+queue =
+
+starting at 6
+current_node
+visited = [6, 3, 5,]
+queue
