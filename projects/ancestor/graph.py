@@ -15,7 +15,8 @@ class Graph:
         """
         Add a vertex to the graph.
         """
-        self.vertices[vertex_id] = set()
+        if vertex_id not in self.vertices:
+            self.vertices[vertex_id] = set()
 
     def add_edge(self, v1, v2):
         """
@@ -39,17 +40,53 @@ class Graph:
         beginning from starting_vertex.
         """
         queue = Queue()
-        visited = list()
-
-        queue.enqueue(starting_vertex)
+        visited = set()
+        queue.enqueue([starting_vertex])
+        ancestor_path = [starting_vertex]
 
         while queue.size() > 0:
-            current_node = queue.dequeue()
+            path = queue.dequeue()
+            node = path[-1]
+            if node not in visited:
+                if len(path) > len(ancestor_path):
+                    ancestor_path = path
+                elif len(path) == len(ancestor_path):
+                    if path[-1] < ancestor_path[-1]:
+                        ancestor_path = path
+                visited.add(node)
+                neighbors = self.get_neighbors(node)
+                for next_node in neighbors:
+                    new_path = list(path)
+                    new_path.append(next_node)
+                    queue.enqueue(new_path)
 
-            if current_node not in visited:
-                visited.append(current_node)
-                edges = self.get_neighbors(current_node)
-                for edge in edges:
-                    queue.enqueue(edge)
+        return ancestor_path
 
-        return visited
+    def dft(self, starting_vertex):
+        """
+        Print each vertex in depth-first order
+        beginning from starting_vertex.
+        """
+        stack = Stack()
+        visited = set()
+
+        stack.push([starting_vertex])
+        ancestor_path = [starting_vertex]
+
+        while stack.size() > 0:
+            path = stack.pop()
+            node = path[-1]
+            if node not in visited:
+                if len(path) > len(ancestor_path):
+                    ancestor_path = path
+                elif len(path) == len(ancestor_path):
+                    if path[-1] < ancestor_path[-1]:
+                        ancestor_path = path
+                visited.add(node)
+                neighbors = self.get_neighbors(node)
+                for next_node in neighbors:
+                    new_path = list(path)
+                    new_path.append(next_node)
+                    stack.push(new_path)
+
+        return ancestor_path
