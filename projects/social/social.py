@@ -98,7 +98,7 @@ class SocialGraph:
         # `get_all_social_paths()` takes a userID and returns a dictionary containing every user in that user's
         # extended network along with the shortest friendship path between each.
 
-        # Hint 1: What kind of graph search guarantees you a shortest path?
+        # Hint 1: What kind of graph search guarantees you a shortest path? - Breadth First
         # Hint 2: Instead of using a `set` to mark users as visited, you could use a `dictionary`.
         # Similar to sets, checking if something is in a dictionary runs in O(1) time.
         # If the visited user is the key, what would the value be?
@@ -122,12 +122,18 @@ class SocialGraph:
                     # print('Connections: ', connections)
                     queue.enqueue(connections)
                     # print('Queue: ', queue.queue)
-        return visited
+        count = 0
+
+        for node in visited:
+            count += len(visited[node])
+
+        average = count / len(visited)
+        return visited, average
 
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(10, 2)
+    sg.populate_graph(1000, 5)
 
     # For this particular random sample below, it should print...
     print('Social Network: ', sg.friendships)
