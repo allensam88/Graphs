@@ -26,9 +26,9 @@ world.load_graph(room_graph)
 world.print_rooms()
 
 player = Player(world.starting_room)
+
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
-print('Room 8 exit rooms:', room_graph[8][1])
 traversal_path = []
 
 explored = TraversalGraph()
@@ -44,7 +44,6 @@ while len(explored.rooms) < len(room_graph):
     # assign initial variables
     current_room = player.current_room.id
     exits = player.current_room.get_exits()
-    # print('Exits: ', exits)
 
     # sift thru exits and find an unexplored direction (?)
     direction = explored.explore_direction(current_room, exits)
@@ -59,16 +58,13 @@ while len(explored.rooms) < len(room_graph):
         traversal_path.append(direction)
         reversal_stack.append(reverse[direction])
 
-        # get the new room & new exits
+        # assign the new room
         new_room = player.current_room.id
-        # new_exits = room_graph[new_room][1]
-        # print('-----------------------------------')
-        # print('New Room: ', new_room)
 
         # add the new room if player has not been there before
         if new_room not in explored.rooms:
+            # get the new room's exits first
             new_exits = player.current_room.get_exits()
-            # print('New Exits: ', new_exits)
             explored.add_room(new_room, new_exits)
 
         # connect the new room to the previous room
@@ -81,11 +77,7 @@ while len(explored.rooms) < len(room_graph):
         player.travel(reversal)
         traversal_path.append(reversal)
 
-    # print('Explored Rooms: ', explored.rooms)
-
 # print('Longest Path: ', explored.longest_dft(0))
-
-# print('Traversal Path: ', traversal_path)
 
 # --------------------BREAK--------------------
 

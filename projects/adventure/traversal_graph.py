@@ -28,6 +28,7 @@ class TraversalGraph:
         else:
             return None
 
+    # not finished.... supposed to return the longest loop possible
     def longest_dft(self, starting_room):
         visited = set()
         stack = []
