@@ -13,39 +13,41 @@ world = World()
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
-# map_file = "maps/test_loop.txt"
+map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-map_file = "maps/main_maze.txt"
+# map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph = literal_eval(open(map_file, "r").read())
 world.load_graph(room_graph)
 
+
 # Print an ASCII map
 world.print_rooms()
 
 player = Player(world.starting_room)
-
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
+print('Room 8 exits:', room_graph[8][1])
 traversal_path = []
 
-visited = TraversalGraph()
+explored = TraversalGraph()
 
 reversal_stack = []
 reverse = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w'}
 
 # initialize starting room
-visited.add_room(player.current_room.id, player.current_room.get_exits())
+explored.add_room(player.current_room.id, player.current_room.get_exits())
 
 # run until the number of visited rooms equals the number of rooms in the maze
-while len(visited.rooms) < len(room_graph):
+while len(explored.rooms) < len(room_graph):
     # assign initial variables
     current_room = player.current_room.id
     exits = player.current_room.get_exits()
+    # print('Exits: ', exits)
 
     # sift thru exits and find an unexplored direction (?)
-    direction = visited.pick_direction(current_room, exits)
+    direction = explored.explore_direction(current_room, exits)
 
     # if unexplored directions (?)
     if direction:
@@ -60,14 +62,16 @@ while len(visited.rooms) < len(room_graph):
         # get the new room & new exits
         new_room = player.current_room.id
         new_exits = player.current_room.get_exits()
+        # print('New Room: ', new_room)
+        # print('New Exits: ', new_exits)
 
         # add the new room if player has not been there before
-        if new_room not in visited.rooms:
-            visited.add_room(new_room, new_exits)
+        if new_room not in explored.rooms:
+            explored.add_room(new_room, new_exits)
 
         # connect the new room to the previous room
-        visited.add_connection(new_room, prev_room,
-                               direction, reverse[direction])
+        explored.add_connection(new_room, prev_room,
+                                direction, reverse[direction])
 
     # else reached a dead end or all exit directions have been explored
     else:
@@ -75,8 +79,13 @@ while len(visited.rooms) < len(room_graph):
         player.travel(reversal)
         traversal_path.append(reversal)
 
-    # print('Traversal Path: ', traversal_path)
-    # print('Visited Rooms: ', visited.rooms)
+    # print('Explored Rooms: ', explored.rooms)
+
+# print('Longest Path: ', explored.longest_dft(0))
+
+# print('Traversal Path: ', traversal_path)
+
+# --------------------BREAK--------------------
 
 # TRAVERSAL TEST
 visited_rooms = set()
