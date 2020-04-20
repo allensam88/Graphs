@@ -16,6 +16,7 @@ class TraversalGraph:
 
     def pick_direction(self, current_room, exits):
         # find the next unexplored direction (?)
+        random.shuffle(exits)
         for direction in exits:
             if self.rooms[current_room][direction] == '?':
                 return direction
