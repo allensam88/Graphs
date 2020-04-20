@@ -11,11 +11,9 @@ class TraversalGraph:
             self.rooms[new_room][exit] = '?'
 
     def add_connection(self, new_room, previous_room, direction, reverse_direction):
-        # if map[new_room][reverse_direction[1]]:
-        self.rooms[new_room][reverse_direction] = previous_room
-
-        # if map[previous_room][direction[1]]:
         self.rooms[previous_room][direction] = new_room
+        if self.rooms[new_room][reverse_direction]:
+            self.rooms[new_room][reverse_direction] = previous_room
 
     def explore_direction(self, current_room, exits):
         # find the next unexplored direction (?)

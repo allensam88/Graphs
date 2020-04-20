@@ -13,9 +13,9 @@ world = World()
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
-map_file = "maps/test_loop.txt"
+# map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph = literal_eval(open(map_file, "r").read())
@@ -28,7 +28,7 @@ world.print_rooms()
 player = Player(world.starting_room)
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
-print('Room 8 exits:', room_graph[8][1])
+print('Room 8 exit rooms:', room_graph[8][1])
 traversal_path = []
 
 explored = TraversalGraph()
@@ -61,12 +61,14 @@ while len(explored.rooms) < len(room_graph):
 
         # get the new room & new exits
         new_room = player.current_room.id
-        new_exits = player.current_room.get_exits()
+        # new_exits = room_graph[new_room][1]
+        # print('-----------------------------------')
         # print('New Room: ', new_room)
-        # print('New Exits: ', new_exits)
 
         # add the new room if player has not been there before
         if new_room not in explored.rooms:
+            new_exits = player.current_room.get_exits()
+            # print('New Exits: ', new_exits)
             explored.add_room(new_room, new_exits)
 
         # connect the new room to the previous room
