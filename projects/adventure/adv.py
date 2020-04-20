@@ -49,7 +49,7 @@ while len(visited.rooms) < len(room_graph):
 
     # if unexplored directions (?)
     if direction:
-        # save the current_room as the previous room, then travel to next room
+        # save the current_room as the previous room, then travel to the next room
         prev_room = current_room
         player.travel(direction)
 
@@ -57,11 +57,11 @@ while len(visited.rooms) < len(room_graph):
         traversal_path.append(direction)
         reversal_stack.append(reverse[direction])
 
-        # get the new room & exits
+        # get the new room & new exits
         new_room = player.current_room.id
         new_exits = player.current_room.get_exits()
 
-        # add the new room if player has been there before
+        # add the new room if player has not been there before
         if new_room not in visited.rooms:
             visited.add_room(new_room, new_exits)
 
